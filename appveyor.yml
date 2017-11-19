@@ -8,6 +8,10 @@ clone_folder: c:\projects\saturn
 install:
     - cmd: set PATH=C:\Program Files\Git\cmd;C:\cygwin64\bin;C:\Program Files (x86)\CMake\bin;C:\Windows\System32;C:\Windows\System32\wbem
 
+    # Python
+    - cmd: curl https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi -o python.msi
+    - cmd: msiexec /a python.msi /qb TARGETDIR=C:\projects\saturn\python
+
     # GNU ed
     - cmd: curl ftp://cygwin.osuosl.org/pub/cygwin/x86_64/release/ed/ed-1.14.1-1.tar.xz -o ed.tar.xz
     - cmd: tar -xf ed.tar.xz
@@ -25,7 +29,7 @@ install:
     - cmd: git clone https://github.com/VictorYudin/saturn.git
 
 build_script:
-    - cmd: make -C saturn boost-archive -j4
+    - cmd: make -C saturn BOOST_LINK=shared PYTHON_BIN=C:/projects/saturn/python/python.exe boost-archive -j4
 
 artifacts:
     - path: saturn/*.tar.xz
